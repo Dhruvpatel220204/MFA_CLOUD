@@ -76,12 +76,21 @@ const Login = () => {
       setTimeout(() => navigate("/dashboard"), 1000);
     } catch (error: any) {
       // Track failed attempt
-      await supabase.from("login_attempts").insert({
-        email: formData.email,
-        success: false,
-        ip_address: "Unknown",
-        user_agent: navigator.userAgent,
-      });
+      const { data: insertData, error: insertError } = await supabase
+        .from("login_attempts")
+        .insert({
+          email: formData.email,
+          success: false,
+          ip_address: "Unknown",
+          user_agent: navigator.userAgent,
+        })
+        .select();
+
+      if (insertError) {
+        console.error("Error inserting failed login attempt:", insertError);
+      } else {
+        console.log("Failed login attempt recorded:", insertData);
+      }
 
       toast({
         variant: "destructive",
