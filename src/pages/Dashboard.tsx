@@ -69,6 +69,7 @@ const Dashboard = () => {
     reasons: string[];
   }>({ level: "recognized", score: 0, reasons: [] });
   const [showDeviceDetails, setShowDeviceDetails] = useState(true);
+  const [failedLoginsCount, setFailedLoginsCount] = useState(0);
 
   useEffect(() => {
     const initializeDashboard = async () => {
